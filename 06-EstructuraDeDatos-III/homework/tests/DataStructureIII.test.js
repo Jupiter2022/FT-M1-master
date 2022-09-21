@@ -20,7 +20,7 @@ describe('binarySearchTree', function() {
     expect(typeof tree.contains).toBe('function');
     expect(typeof tree.depthFirstForEach).toBe('function');
     expect(typeof tree.breadthFirstForEach).toBe('function');
-    expect(typeof tree.size).toBe('function');
+    expect(typeof tree.size).toBe('function'); 
   });
 
   it('toma valores y reporta tamaño correctamente', function () {

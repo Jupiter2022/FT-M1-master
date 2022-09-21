@@ -1,41 +1,62 @@
-function HashTable() {
-  this.memory=[];
-  this.numBuckets = 35;
+function BinarySearchTree(value) {
+  this.value = value;
+  this.left = null;
+  this.right = null;
 }
 
-HashTable.prototype.hash = function(input){
-  let key = 0;
-  for (let i = 0; i < input.length; i++){
-    key += input.charCodeAt(i);
+
+BinarySearchTree.prototype.size = function(){
+  if(!this.value) return null;
+  if(!this.left && !this.right)return 1;
+  if(this.left && !this.right)return 1 + this.left.size();
+  if(!this.left && this.right)return 1 + this.right.size();  
+  if(this.left && this.right)return 1 + this.left.size() + this.right.size();
+}
+BinarySearchTree.prototype.insert = function(value){ 
+  if(!this.value) this.value = value;
+
+  if (value > this.value){
+    if (!this.right){
+      this.right = new BinarySearchTree(value);
+    }else{
+      this.right.insert(value);
+    }
+  }else{
+    if (!this.left){
+      this.left = new BinarySearchTree(value);
+    }else{
+      this.left.insert(value)
+    }
   }
-  return key % this.numBuckets;
-}
-HashTable.prototype.hasKey = function(clave){
-  //hasKey: recibe una clave por parámetro y consulta si ya hay algo almacenado en la tabla con esa clave (retorna un booleano).
-  let key = this.hash(clave);
-  if (this.memory[key][clave]) return true
-  return false;
-}
-HashTable.prototype.set = function(clave, valor){
-  if (typeof clave !== 'string') throw TypeError('Keys must be strings')
-  let key = this.hash(clave);
-  
-  if (!this.memory[key]){
-    this.memory[key] = {};
-    this.memory[key][clave]=valor;
-    return this.memory[key];
-  }
-  this.memory[key][clave]=valor
-  return this.memory[key];
-}
-HashTable.prototype.get = function(clave){
-  let key = this.hash(clave);
-  return this.memory[key][clave]
+
 }
 
-let tabla = new HashTable();
-console.log(tabla.set('foobar', 'fluf cats'))
-console.log(tabla.set('ofo', 'bar2'))
-console.log(tabla.get('foo'))
-console.log(tabla.hasKey('foobar'))
-console.log(tabla.hasKey('raboof'))
+
+
+
+
+BinarySearchTree.prototype.contains = function(value){
+  //contains: retorna true o false luego de evaluar si cierto valor existe dentro del árbol
+  if (value === this.value) return true;
+  if(value > this.value){
+    if(!this.right) return false;
+    else return this.right.contains(value);
+  }else{
+    if(!this.left) return false;
+    else return this.left.contains(value);
+  }
+
+}
+BinarySearchTree.prototype.depthFirstForEach = function(){}
+BinarySearchTree.prototype.breadthFirstForEach = function(){}
+
+let arbol = new BinarySearchTree(20)
+arbol.insert(32);
+arbol.insert(30);
+arbol.insert(35);
+arbol.insert(12);
+arbol.insert(15);
+arbol.insert(11);
+console.log(arbol.contains(11))
+console.log(arbol.size())
+console.log(arbol)
